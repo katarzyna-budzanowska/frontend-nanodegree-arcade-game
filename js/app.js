@@ -5,7 +5,7 @@ class Enemy {
     constructor (x = 0, y = 0) {
       // The image/sprite for our enemies, this uses
       // a helper we've provided to easily load images
-      const sprite = 'images/enemy-bug.png';
+      this.sprite = 'images/enemy-bug.png';
       this.x = x;
       this.y = y;
     }
@@ -13,7 +13,7 @@ class Enemy {
     // Update the enemy's position, required method for game
     // Parameter: dt, a time delta between ticks
     update (dt) {
-      this.x += 1;
+      //this.x += 1;
         // You should multiply any movement by the dt parameter
         // which will ensure the game runs at the same speed for
         // all computers.
@@ -30,10 +30,10 @@ class Enemy {
 class Player {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
-    constructor (x = 0, y = 0) {
+    constructor (x = 202, y = 404) {
       // The image/sprite for our enemies, this uses
       // a helper we've provided to easily load images
-      const sprite = 'images/char-cat-girl.png';
+      this.sprite = 'images/char-cat-girl.png';
       this.x = x;
       this.y = y;
     }
@@ -41,7 +41,7 @@ class Player {
     // Update the enemy's position, required method for game
     // Parameter: dt, a time delta between ticks
     update (dt) {
-      this.x += 1;
+      //this.x += 1;
         // You should multiply any movement by the dt parameter
         // which will ensure the game runs at the same speed for
         // all computers.
