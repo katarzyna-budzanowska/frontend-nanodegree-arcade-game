@@ -1,3 +1,6 @@
+const x_jump = 101;
+const y_jump = 83;
+
 // Enemies our player must avoid
 class Enemy {
     // Variables applied to each of our instances go here,
@@ -52,6 +55,24 @@ class Player {
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     };
 
+    handleInput (key) {
+      switch (key) {
+        case 'left':
+          this.x = this.x == 0 ? 0 : this.x - x_jump;
+          break;
+        case 'right':
+          this.x = this.x == 404 ? 404 : this.x + x_jump;
+          break;
+        case 'up':
+          this.y = this.y == -11 ? -11 : this.y - y_jump;
+          break;
+        case 'down':
+          this.y = this.y == 404 ? 404 : this.y + y_jump;
+          break;
+        default:
+
+      }
+    }
 }
 
 // Now write your own player class
