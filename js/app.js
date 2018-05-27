@@ -5,18 +5,19 @@ const y_jump = 83;
 class Enemy {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
-    constructor (x = 0, y = 0) {
+    constructor (x = 0, y = 0, speed = 0) {
       // The image/sprite for our enemies, this uses
       // a helper we've provided to easily load images
-      this.sprite = 'images/enemy-bug.png';
+      this.sprite = speed > 0 ? 'images/enemy-bug.png' : 'images/enemy-lbug.png';
       this.x = x;
       this.y = y;
+      this.speed = speed;
     }
 
     // Update the enemy's position, required method for game
     // Parameter: dt, a time delta between ticks
     update (dt) {
-      //this.x += 1;
+        this.x += this.speed;
         // You should multiply any movement by the dt parameter
         // which will ensure the game runs at the same speed for
         // all computers.
@@ -26,6 +27,33 @@ class Enemy {
     render () {
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     };
+
+    static generateEnemy(speed){
+      const rows = [60, 143, 226];
+      const startX = Math.random() < 0.5 ? -101 : 505;
+      const startY = rows[Math.floor(Math.random()*3)];
+      return new Enemy( startX, startY, startX == -101 ? speed : -speed );
+    }
+
+    isOut () {
+      if( this.x < -102 ) {
+        return true;
+      }
+      if( this.x > 506 ) {
+        return true;
+      }
+      return false;
+    }
+
+    getRow () {
+      return ( this.y - 60 ) / 83;
+    }
+
+    bump () {
+      this.speed = -this.speed;
+      this.x += 2*this.speed;
+      this.sprite = this.speed > 0 ? 'images/enemy-bug.png' : 'images/enemy-lbug.png';
+    }
 
 }
 
@@ -49,6 +77,19 @@ class Player {
         // which will ensure the game runs at the same speed for
         // all computers.
     };
+
+    die () {
+      this.resetPosition();
+    }
+
+    resetPosition () {
+      this.x = 202;
+      this.y = 404;
+    }
+
+    getRow () {
+      return ( this.y - 72 ) / 83;
+    }
 
     // Draw the enemy on the screen, required method for game
     render () {
@@ -83,8 +124,10 @@ class Player {
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
-const allEnemies = [];
-allEnemies.push( new Enemy() );
+let allEnemies = [];
+allEnemies.push( Enemy.generateEnemy( 1 ) );
+allEnemies.push( Enemy.generateEnemy( 2 ) );
+allEnemies.push( Enemy.generateEnemy( 3 ) );
 
 const player = new Player();
 

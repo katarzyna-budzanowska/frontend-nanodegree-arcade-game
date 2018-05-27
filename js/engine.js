@@ -79,7 +79,8 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
-        // checkCollisions();
+        checkWin();
+        checkCollisions();
     }
 
     /* This is called by the update function and loops through all of the
@@ -94,6 +95,16 @@ var Engine = (function(global) {
             enemy.update(dt);
         });
         player.update();
+        function isInGame( enemy ) {
+          return ! enemy.isOut();
+        }
+        allEnemies = allEnemies.filter( isInGame );
+        if( allEnemies.length < 4 ) {
+          if( Math.random() < ( 0.001 + 0.1 * ( 4 - allEnemies.length ) ) ) {
+            const speed = Math.floor( Math.random() * 5 + 1 );
+            allEnemies.push( Enemy.generateEnemy(speed) );
+          }
+        }
     }
 
     /* This function initially draws the "game level", it will then call
@@ -156,6 +167,53 @@ var Engine = (function(global) {
         player.render();
     }
 
+    function checkWin() {
+      if( player.y == -11 ) {
+        player.resetPosition();
+      }
+    }
+
+    function checkCollisions() {
+      checkEnemyCollisions();
+      checkPlayerCollisions();
+    }
+
+    function checkEnemyCollisions() {
+      for( i = 0; i < allEnemies.length; i++ ) {
+        for( j = i; j < allEnemies.length; j++ ) {
+          if( i == j ) {
+            continue;
+          }
+          const ei = allEnemies[i];
+          const ej = allEnemies[j];
+          if( ei.y != ej.y) {
+            continue;
+          }
+          if( Math.abs( ei.x - ej.x ) < 95 ){
+            if( Math.sign(ei.speed) != Math.sign(ej.speed) ) {
+              ej.bump();
+              ei.bump();
+            } else if ( Math.abs( ei.speed ) > Math.abs( ej.speed ) ) {
+              ei.bump();
+            } else {
+              ej.bump();
+            }
+          }
+        }
+      }
+    }
+
+    function checkPlayerCollisions() {
+      allEnemies.forEach(function(enemy) {
+          if( enemy.getRow() != player.getRow() ) {
+            return;
+          }
+          if( Math.abs( enemy.x - player.x ) < 75 ){
+            player.die();
+          }
+      });
+    }
+
     /* This function does nothing but it could have been a good place to
      * handle game reset states - maybe a new game menu or a game over screen
      * those sorts of things. It's only called once by the init() method.
@@ -173,6 +231,7 @@ var Engine = (function(global) {
         'images/water-block.png',
         'images/grass-block.png',
         'images/enemy-bug.png',
+        'images/enemy-lbug.png',
         'images/char-boy.png',
         'images/char-cat-girl.png'
     ]);
