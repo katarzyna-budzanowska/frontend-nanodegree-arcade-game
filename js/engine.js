@@ -169,6 +169,8 @@ var Engine = (function(global) {
 
     function checkWin() {
       if( player.y == -11 ) {
+        const audio = new Audio('audio/yeehaw.mp3');
+        audio.play();
         player.resetPosition();
       }
     }
