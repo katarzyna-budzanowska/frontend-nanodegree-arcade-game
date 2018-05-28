@@ -101,7 +101,7 @@ var Engine = (function(global) {
         allEnemies = allEnemies.filter( isInGame );
         if( allEnemies.length < 4 ) {
           if( Math.random() < ( 0.001 + 0.1 * ( 4 - allEnemies.length ) ) ) {
-            const speed = Math.floor( Math.random() * 5 + 1 );
+            const speed = Math.floor( Math.random() * 300 + 100 );
             allEnemies.push( Enemy.generateEnemy(speed) );
           }
         }
@@ -180,7 +180,9 @@ var Engine = (function(global) {
       checkPlayerCollisions();
     }
 
+    // Check if two enemies did bump into eachother
     function checkEnemyCollisions() {
+      // Loop over all enemies pairs
       for( i = 0; i < allEnemies.length; i++ ) {
         for( j = i; j < allEnemies.length; j++ ) {
           if( i == j ) {
@@ -189,15 +191,20 @@ var Engine = (function(global) {
           const ei = allEnemies[i];
           const ej = allEnemies[j];
           if( ei.y != ej.y) {
+            // enemies on different rows ( will not bump )
             continue;
           }
+          // 95 is a good bump distance visually
           if( Math.abs( ei.x - ej.x ) < 95 ){
             if( Math.sign(ei.speed) != Math.sign(ej.speed) ) {
+              // both front bump
               ej.bump();
               ei.bump();
             } else if ( Math.abs( ei.speed ) > Math.abs( ej.speed ) ) {
+              // ei front, ej rear bump
               ei.bump();
             } else {
+              // ej front, ei rear bump
               ej.bump();
             }
           }
@@ -205,11 +212,14 @@ var Engine = (function(global) {
       }
     }
 
+    // Check if player has hit a enemy
     function checkPlayerCollisions() {
       allEnemies.forEach(function(enemy) {
           if( enemy.getRow() != player.getRow() ) {
+            // different rows ( will not collide )
             return;
           }
+          // 75 hit distance
           if( Math.abs( enemy.x - player.x ) < 75 ){
             player.die();
           }
@@ -234,7 +244,6 @@ var Engine = (function(global) {
         'images/grass-block.png',
         'images/enemy-bug.png',
         'images/enemy-lbug.png',
-        'images/char-boy.png',
         'images/char-cat-girl.png'
     ]);
     Resources.onReady(init);
