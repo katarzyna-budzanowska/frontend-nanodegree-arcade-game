@@ -10,11 +10,11 @@ Clone the repository:
 ```
 $ git clone https://github.com/katarzyna-budzanowska/frontend-nanodegree-arcade-game
 ```
-If you don't have `git` installed you can get project files by downloading them from this location.
+If you don't have `git` installed you can get project files by downloading them from: https://github.com/katarzyna-budzanowska/frontend-nanodegree-arcade-game/archive/master.zip
 
 Open `index.html` file in your browser.
 
-##How to play
+## How to play
 * Your goal is to reach the water.
 * You can move with the arrow keys on the keyboard.
 * Avoid collision with bugs because it will reset the game.
